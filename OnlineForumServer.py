@@ -52,7 +52,7 @@ def f_conn_handle():
 def login(conn,addr):
     username  = conn.recv(4096).decode("UTF-8")
     pwd = conn.recv(4096).decode("UTF-8")
-    query = f"SELECT salt, hash FROM USERS WHERE USERNAME ={username}"
+    query = f"SELECT salt, hash FROM USERS WHERE USERNAME = '{username}' "
 
     try:
         DBCur.execute(query)
@@ -83,7 +83,6 @@ def comm(conn,addr):
             function_number = conn.recv(4096).decode("UTF-8")
             if not function_number:
                 continue
-
             elif function_number == "1":
                 login(conn,addr)
 
@@ -93,7 +92,8 @@ def comm(conn,addr):
             elif function_number == "0":
                 break
         except Exception:
-            continue
+            break
+
     conn.close()
 
 def run(ip = '127.0.0.1',port=8000): #Set default value of parameters
@@ -104,7 +104,7 @@ def run(ip = '127.0.0.1',port=8000): #Set default value of parameters
     context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     context.load_cert_chain(certfile='server.crt', keyfile='server.key')
     ssl_socket = context.wrap_socket(server, server_side=True)
-    pool = ThreadPoolExecutor(200) # Use ThreadPoolExecutor to handle
+    pool = ThreadPoolExecutor(2000) # Use ThreadPoolExecutor to handle
     logging.info('Server started')
     while True:
         try:
@@ -120,6 +120,4 @@ if __name__ == '__main__':
     DBConn = psycopg2.connect(database="CyberSecurity", user="postgres", password="1234", host="localhost",port="5432")
     DBConn.autocommit = False
     DBCur = DBConn.cursor()
-    clients=dict({})
-    Clients_conn=dict({})
     run()

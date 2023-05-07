@@ -8,6 +8,11 @@ import datetime
 import socket
 import ssl
 
+
+def on_closing():
+    ssl_client.send("0".encode("UTF-8"))
+    app.destroy()
+
 def detect_sql_injection(input_str):
     # Define a list of SQL keywords to check for
     sql_keywords = ['ON ','GRANT ','SELECT ', 'INSERT ', 'UPDATE ', 'DELETE ', 'DROP ', 'CREATE ', 'ALTER ', 'UNION ', 'BY ', 'FROM ', 'SET ']
@@ -62,17 +67,19 @@ class ConnectPage(tk.Frame):
             flag = ssl_client.recv(4096).decode("UTF-8")
 
             if flag=="0":
-                pass
+                return
 
             elif flag=="404":
                 tk.messagebox.showerror('Connection Error', message='Sorry, Server is not available right now.')
 
             elif flag=="2":
-                pass
+                tk.messagebox.showerror('Error', message='User name does not exist.')
 
             elif flag=="3":
-                pass
+                return
 
+        def sign_up():
+            return
         header = tk.Label(self,
                           text="User Login",
                           font=("Microsoft YaHei", 40, "bold")
@@ -129,7 +136,7 @@ class ConnectPage(tk.Frame):
                                    width=10,
                                    height=3,
                                    activeforeground="red",
-                                   command=login
+                                   command=sign_up
                                    )
         Sign_up_button.pack(padx=5, pady=10, side=tk.LEFT)
         Sign_up_button.place(x=800, y=530)
@@ -158,7 +165,9 @@ if __name__ == "__main__":
     ssl_client = ssl.wrap_socket(client)
     try:
         ssl_client.connect(('127.0.0.1', 8000))
-        app = Application()
-        app.mainloop()
     except:
-        tk.messagebox.showerror('Connection Error', message='Sorry, Server is not available right now.')
+        tk.messagebox.showerror('Connection Error', message='Sorry, Can not connect to server.')
+    app = Application()
+    app.protocol("WM_DELETE_WINDOW", on_closing)
+    app.mainloop()
+
