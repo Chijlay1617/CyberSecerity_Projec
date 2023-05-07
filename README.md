@@ -1,2 +1,2 @@
 # CyberSecerity_Project
-# Only implement user authentication 
+# Implement user authentication with simple GUI
