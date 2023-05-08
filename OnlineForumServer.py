@@ -26,16 +26,14 @@ def generate_sha256_hash(_str):
     return hash_result
 
 def generate_salt():
-    password_length = 8
+    salt_length = 8
     characters = string.ascii_letters + string.digits
-    password = ''.join(random.choice(characters) for i in range(password_length))
-    return password
+    salt = ''.join(random.choice(characters) for i in range(salt_length))
+    return salt
 
 def check_password(password):
-    # Check if the password length is greater than or equal to 8
     if len(password) < 8:
         return False
-    # Check for uppercase, lowercase, numbers and special characters
     pattern = '^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&,+-/;:| ])[A-Za-z\d@$!%*?&,+-/;:| ]+$'
     if re.match(pattern, password):
         return True
@@ -52,17 +50,55 @@ def f_conn_handle():
 def login(conn,addr):
     username  = conn.recv(4096).decode("UTF-8")
     pwd = conn.recv(4096).decode("UTF-8")
-    query = f"SELECT salt, hash FROM USERS WHERE USERNAME = '{username}' "
+    query = f"SELECT user_id, salt, hash FROM USERS WHERE USERNAME = '{username}' "
 
     try:
         DBCur.execute(query)
         row = DBCur.fetchone()
         if not row:
             conn.send("2".encode("UTF-8"))
+            return None, None
+        else:
+            if varify_password(pwd,row[1],row[2]):
+                conn.send("0".encode("UTF-8"))
+                logging.info(f"{username} login, ID: {row[0]}")
+                DBConn.commit()
+                return row[0], username
+            else:
+                conn.send("3".encode("UTF-8"))
+                return None, None
+
+    except Exception:
+        conn.send("404".encode("UTF-8"))
+        DBConn.rollback()
+        return None, None
+
+def sign_up(conn,addr):
+    username = conn.recv(4096).decode("UTF-8")
+    pwd = conn.recv(4096).decode("UTF-8")
+    query = f"SELECT salt FROM USERS WHERE USERNAME = '{username}' "
+
+    try:
+        DBCur.execute(query)
+        row = DBCur.fetchone()
+        if row:
+            conn.send("2".encode("UTF-8"))
             return
         else:
-            if varify_password(pwd,row[2],row[3]):
+            if check_password(pwd):
                 conn.send("0".encode("UTF-8"))
+                _salt = generate_salt()
+                _hash = generate_sha256_hash(pwd+_salt)
+                getId_query = f"SElECT MAX(user_id) From users"
+                DBCur.execute(getId_query)
+                row = DBCur.fetchone()
+                if not row:
+                    raise Exception
+                userId = row[0]+1
+                insert_query = f"insert into users(user_id, username, salt, hash) values({userId},'{username}','{_salt}','{_hash}')"
+                DBCur.execute(insert_query)
+                logging.info(f"New user {username} Sign up, ID: {userId}")
+                DBConn.commit()
                 return
             else:
                 conn.send("3".encode("UTF-8"))
@@ -70,26 +106,38 @@ def login(conn,addr):
 
     except Exception:
         conn.send("404".encode("UTF-8"))
-        conn.rollback()
+        DBConn.rollback()
         return
 
-def sign_up(conn,addr):
+
+def post_question(conn, addr, User_id):
     pass
 
+
 def comm(conn,addr):
-    logging.info(conn)
+    User_id = None
+    Username = None
+    logging.info(f"Connect: {conn}")
     while True:
         try:
             function_number = conn.recv(4096).decode("UTF-8")
             if not function_number:
                 continue
             elif function_number == "1":
-                login(conn,addr)
+                User_id, Username = login(conn,addr)
 
             elif function_number == "2":
                 sign_up(conn,addr)
 
+            elif function_number == "3" and User_id is not None:
+                post_question(conn,addr,User_id)
+
+            elif function_number == "4" :
+                logging.info(f"{Username} logout, ID: {User_id}")
+                User_id, Username = None ,None
+
             elif function_number == "0":
+                logging.info(f"Disconnect: {conn}")
                 break
         except Exception:
             break
@@ -100,7 +148,7 @@ def run(ip = '127.0.0.1',port=8000): #Set default value of parameters
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # Default protocol is TCP
     server.bind((ip, port))
-    server.listen(20)
+    server.listen(200)
     context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
     context.load_cert_chain(certfile='server.crt', keyfile='server.key')
     ssl_socket = context.wrap_socket(server, server_side=True)

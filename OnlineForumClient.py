@@ -57,7 +57,11 @@ class ConnectPage(tk.Frame):
         def login():
             fun_id = "1"
             get_username = AccountEntry.get()
+            if not get_username:
+                return
             get_pwd = PasswordEntry.get()
+            if not get_pwd:
+                return
             if detect_sql_injection(get_username) or detect_sql_injection(get_pwd):
                 tk.messagebox.showerror('Error', message='Do use SQL injection attack')
                 return
@@ -67,7 +71,8 @@ class ConnectPage(tk.Frame):
             flag = ssl_client.recv(4096).decode("UTF-8")
 
             if flag=="0":
-                return
+                tk.messagebox.showinfo('Info',message='Login Successfully!')
+                root.show_frame(StartPage)
 
             elif flag=="404":
                 tk.messagebox.showerror('Connection Error', message='Sorry, Server is not available right now.')
@@ -76,10 +81,36 @@ class ConnectPage(tk.Frame):
                 tk.messagebox.showerror('Error', message='User name does not exist.')
 
             elif flag=="3":
-                return
+                tk.messagebox.showerror('Error', message='Password is incorrect.')
 
         def sign_up():
-            return
+            fun_id = "2"
+            get_username = AccountEntry.get()
+            if not get_username:
+                return
+            get_pwd = PasswordEntry.get()
+            if not get_pwd:
+                return
+            if detect_sql_injection(get_username) or detect_sql_injection(get_pwd):
+                tk.messagebox.showerror('Error', message='Do use SQL injection attack')
+                return
+            ssl_client.send(fun_id.encode("UTF-8"))
+            ssl_client.send(get_username.encode("UTF-8"))
+            ssl_client.send(get_pwd.encode("UTF-8"))
+            flag = ssl_client.recv(4096).decode("UTF-8")
+
+            if flag=="0":
+                tk.messagebox.showinfo('Info',message='Sign up Successfully!')
+
+            elif flag=="404":
+                tk.messagebox.showerror('Connection Error', message='Sorry, Server is not available right now.')
+
+            elif flag=="2":
+                tk.messagebox.showerror('Error', message='User name has been used.')
+
+            elif flag=="3":
+                tk.messagebox.showerror('Error', message='The password must be longer than eight digits and include upper and lower case alphanumeric characters and special symbols.')
+
         header = tk.Label(self,
                           text="User Login",
                           font=("Microsoft YaHei", 40, "bold")
@@ -146,9 +177,12 @@ class StartPage(tk.Frame):
         super().__init__(parent)
 
         def get_question():
-            pass
+            fun_id = "3"
+
         def logout():
-            fun_id = "0"
+            fun_id = "4"
+            ssl_client.send(fun_id.encode("UTF-8"))
+            root.show_frame(ConnectPage)
 
 
         header = tk.Label(self,
@@ -157,6 +191,17 @@ class StartPage(tk.Frame):
                           )
         header.pack()
         header.place(x=500, y=70)
+
+        logout_button = tk.Button(self,
+                                  text="Logout",
+                                  font=("Microsoft YaHei", 20),
+                                  width=10,
+                                  height=3,
+                                  activeforeground="red",
+                                  command=logout
+                                  )
+        logout_button.pack(padx=5, pady=10, side=tk.LEFT)
+        logout_button.place(x=960, y=20)
 
 
 if __name__ == "__main__":
