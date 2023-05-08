@@ -1,14 +1,10 @@
 import tkinter as tk
 from time import sleep
-from tkinter import ttk
 from tkinter import *
 import tkinter.messagebox
-import tkinter
 import re
-import datetime
 import socket
 import ssl
-
 
 def on_closing():
     try:
@@ -58,6 +54,7 @@ class Application(tk.Tk):
         frame.tkraise() # switch
 
 class ConnectPage(tk.Frame):
+
     def __init__(self, parent, root):
         super().__init__(parent)
 
@@ -209,7 +206,6 @@ class StartPage(tk.Frame):
                                   )
         logout_button.pack(padx=5, pady=10, side=tk.LEFT)
         logout_button.place(x=960, y=20)
-
 
 if __name__ == "__main__":
 

@@ -125,3 +125,14 @@
 2023-05-08 13:22:23 [INFO] Server started
 2023-05-08 13:22:34 [INFO] Connect: <ssl.SSLSocket fd=652, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 54710)>
 2023-05-08 13:22:36 [INFO] Disconnect: <ssl.SSLSocket fd=652, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 54710)>
+2023-05-08 21:51:56 [INFO] Server started
+2023-05-08 21:52:03 [INFO] Connect: <ssl.SSLSocket fd=628, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 64356)>
+2023-05-08 21:53:27 [INFO] Chijlay login, ID: 10001
+2023-05-08 21:53:31 [INFO] Chijlay logout, ID: 10001
+2023-05-08 21:53:32 [INFO] Chijlay login, ID: 10001
+2023-05-08 21:53:34 [INFO] Chijlay logout, ID: 10001
+2023-05-08 21:53:41 [INFO] New user dasfasdf Sign up, ID: 10005
+2023-05-08 21:53:43 [INFO] dasfasdf login, ID: 10005
+2023-05-08 21:53:44 [INFO] dasfasdf logout, ID: 10005
+2023-05-08 21:53:45 [INFO] None logout, ID: None
+2023-05-08 21:53:45 [INFO] Disconnect: <ssl.SSLSocket fd=628, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 64356)>

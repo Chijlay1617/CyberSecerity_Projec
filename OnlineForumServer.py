@@ -151,7 +151,6 @@ def comm(conn,addr):
             conn.close()
             break
 
-
 def run(ip = '127.0.0.1',port=8000): #Set default value of parameters
 
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # Default protocol is TCP
