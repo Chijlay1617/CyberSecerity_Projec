@@ -1,4 +1,5 @@
 import tkinter as tk
+from time import sleep
 from tkinter import ttk
 from tkinter import *
 import tkinter.messagebox
@@ -10,13 +11,18 @@ import ssl
 
 
 def on_closing():
-    ssl_client.send("4".encode("UTF-8"))
-    ssl_client.send("0".encode("UTF-8"))
+    try:
+        ssl_client.send("4".encode("UTF-8"))
+        ssl_client.send("0".encode("UTF-8"))
+    except OSError:
+        pass
+    except Exception:
+        pass
     app.destroy()
 
 def detect_sql_injection(input_str):
     # Define a list of SQL keywords to check for
-    sql_keywords = ['ON ','GRANT ','SELECT ', 'INSERT ', 'UPDATE ', 'DELETE ', 'DROP ', 'CREATE ', 'ALTER ', 'UNION ', 'BY ', 'FROM ', 'SET ']
+    sql_keywords = ['GRANT ','SELECT ', 'INSERT ', 'UPDATE ', 'DELETE ', 'DROP ', 'CREATE ', 'ALTER ', 'UNION ', 'BY ', 'FROM ', 'SET ']
     count = 0
     # Use regular expression to find any SQL keywords in the input string
     for keyword in sql_keywords:
@@ -72,17 +78,17 @@ class ConnectPage(tk.Frame):
             flag = ssl_client.recv(4096).decode("UTF-8")
 
             if flag=="0":
-                tk.messagebox.showinfo('Info',message='Login Successfully!')
+                tk.messagebox.showinfo('Info',message=f'You are authenticated, Welcome <{get_username}>')
                 root.show_frame(StartPage)
 
             elif flag=="404":
                 tk.messagebox.showerror('Connection Error', message='Sorry, Server is not available right now.')
 
             elif flag=="2":
-                tk.messagebox.showerror('Error', message='User name does not exist.')
+                tk.messagebox.showerror('Error', message='Please enter correct username.')
 
             elif flag=="3":
-                tk.messagebox.showerror('Error', message='Password is incorrect.')
+                tk.messagebox.showerror('Error', message='Please enter correct password.')
 
         def sign_up():
             fun_id = "2"
@@ -101,7 +107,7 @@ class ConnectPage(tk.Frame):
             flag = ssl_client.recv(4096).decode("UTF-8")
 
             if flag=="0":
-                tk.messagebox.showinfo('Info',message='Sign up Successfully!')
+                tk.messagebox.showinfo('Info',message='Registration Successful!')
 
             elif flag=="404":
                 tk.messagebox.showerror('Connection Error', message='Sorry, Server is not available right now.')
@@ -213,6 +219,9 @@ if __name__ == "__main__":
         ssl_client.connect(('127.0.0.1', 8000))
     except:
         tk.messagebox.showerror('Connection Error', message='Sorry, Can not connect to server.')
+        sleep(2)
+        exit(-1)
+
     app = Application()
     app.protocol("WM_DELETE_WINDOW", on_closing)
     app.mainloop()

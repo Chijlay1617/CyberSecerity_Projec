@@ -123,7 +123,12 @@ def comm(conn,addr):
         try:
             function_number = conn.recv(4096).decode("UTF-8")
             if not function_number:
-                continue
+                if User_id is not None:
+                    logging.info(f"{Username} logout, ID: {User_id}")
+                    User_id, Username = None, None
+                logging.info(f"Disconnect: {conn}")
+                conn.close()
+                break
             elif function_number == "1":
                 User_id, Username = login(conn,addr)
 
@@ -139,11 +144,13 @@ def comm(conn,addr):
 
             elif function_number == "0":
                 logging.info(f"Disconnect: {conn}")
+                conn.close()
                 break
         except Exception:
+            logging.info(f"Disconnect: {conn}")
+            conn.close()
             break
 
-    conn.close()
 
 def run(ip = '127.0.0.1',port=8000): #Set default value of parameters
 
