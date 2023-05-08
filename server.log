@@ -94,3 +94,14 @@
 2023-05-08 03:47:07 [INFO] asdfva login, ID: 10004
 2023-05-08 03:47:09 [INFO] asdfva logout, ID: 10004
 2023-05-08 03:47:11 [INFO] Disconnect: <ssl.SSLSocket fd=592, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 57327)>
+2023-05-08 03:55:02 [INFO] Connect: <ssl.SSLSocket fd=572, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 51323)>
+2023-05-08 03:55:09 [INFO] Connect: <ssl.SSLSocket fd=616, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 51324)>
+2023-05-08 03:55:14 [INFO] Connect: <ssl.SSLSocket fd=640, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 51325)>
+2023-05-08 03:55:17 [INFO] Connect: <ssl.SSLSocket fd=676, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 51326)>
+2023-05-08 03:56:14 [INFO] Chijlay login, ID: 10001
+2023-05-08 03:56:25 [INFO] ZN login, ID: 10003
+2023-05-08 03:56:45 [INFO] Wenbin login, ID: 10002
+2023-05-08 03:57:15 [INFO] Disconnect: <ssl.SSLSocket fd=616, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 51324)>
+2023-05-08 03:57:18 [INFO] Disconnect: <ssl.SSLSocket fd=572, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 51323)>
+2023-05-08 03:57:19 [INFO] Disconnect: <ssl.SSLSocket fd=640, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 51325)>
+2023-05-08 03:57:20 [INFO] Disconnect: <ssl.SSLSocket fd=676, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 51326)>
