@@ -18,7 +18,7 @@ def on_closing():
 
 def detect_sql_injection(input_str):
     # Define a list of SQL keywords to check for
-    sql_keywords = ['GRANT ','SELECT ', 'INSERT ', 'UPDATE ', 'DELETE ', 'DROP ', 'CREATE ', 'ALTER ', 'UNION ', 'BY ', 'FROM ', 'SET ']
+    sql_keywords = ['GRANT','SELECT', 'INSERT', 'UPDATE', 'DELETE', 'DROP', 'CREATE', 'ALTER', 'UNION', 'BY', 'FROM', 'SET']
     count = 0
     # Use regular expression to find any SQL keywords in the input string
     for keyword in sql_keywords:
@@ -26,7 +26,7 @@ def detect_sql_injection(input_str):
         match = pattern.search(input_str)
         if match:
             count+=1
-    if count>=2:
+    if count>=1:
         return True
     else:
         return False

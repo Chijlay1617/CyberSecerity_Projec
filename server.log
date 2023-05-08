@@ -136,3 +136,10 @@
 2023-05-08 21:53:44 [INFO] dasfasdf logout, ID: 10005
 2023-05-08 21:53:45 [INFO] None logout, ID: None
 2023-05-08 21:53:45 [INFO] Disconnect: <ssl.SSLSocket fd=628, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 64356)>
+2023-05-08 23:55:01 [INFO] Server started
+2023-05-08 23:55:07 [INFO] Connect: <ssl.SSLSocket fd=612, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 56989)>
+2023-05-08 23:55:24 [INFO] New user User Sign up, ID: 10006
+2023-05-08 23:55:28 [INFO] User login, ID: 10006
+2023-05-08 23:55:31 [INFO] User logout, ID: 10006
+2023-05-08 23:57:13 [INFO] None logout, ID: None
+2023-05-08 23:57:13 [INFO] Disconnect: <ssl.SSLSocket fd=612, family=AddressFamily.AF_INET, type=SocketKind.SOCK_STREAM, proto=0, laddr=('127.0.0.1', 8000), raddr=('127.0.0.1', 56989)>
