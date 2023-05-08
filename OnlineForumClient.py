@@ -9,7 +9,6 @@ import socket
 import ssl
 
 
-
 def on_closing():
     ssl_client.send("4".encode("UTF-8"))
     ssl_client.send("0".encode("UTF-8"))
